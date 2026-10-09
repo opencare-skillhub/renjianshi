@@ -11,7 +11,7 @@ description: >-
   触发插图版：用户说“插图版 / 配图版 / 出图版 / 加上图 / 来几张画”。
   不用于：新闻播报、营销软文、事实摘要、需要快速作答的简单问答、纯数据报告。
 metadata:
-  version: "1.4.1"
+  version: "1.5.0"
   author: "Minie (for 晓强)"
   tone: "冷静 · 人文 · 文艺 · 独立"
 ---
@@ -185,4 +185,5 @@ $PY .../preset.py --template 橙暖爱 --scene "…" --run --out /abs/01-x.png
 ```
 - 目录：`references/templates/`（`templates.json` 机读 + `<系列>.md` 说明）。
 - 命中触发词（如"橙暖爱"）时，插图版**直接套用该系列**，不再临时选风格。
-- 新增/修改系列：编辑 `templates.json` 并加同名 `.md`。
+- **新增/修改系列**：编辑 `templates.json` 并加同名 `.md`。完整字段表 + 验收清单 + **「给 AI agent 的无歧义 12 步」**见仓库根 `CONTRIBUTING.md`（**人、或任何 agent，都可以照着它自己造一个新系列**）。
+- **绘本（插图合集）**：一个系列下的一组图，放 `assets/gallery/<系列>/`（参考 `assets/gallery/橙暖爱/`）。

@@ -30,16 +30,16 @@
 
 <table>
   <tr>
-    <td width="50%"><img src="assets/readme/01-waiting-together.jpg" alt="候诊区，母女相依而坐"></td>
-    <td width="50%"><img src="assets/readme/02-peeling-apple.jpg" alt="病房里，女儿给父亲削一个苹果"></td>
+    <td width="50%"><img src="assets/gallery/橙暖爱/01-waiting-together.jpg" alt="候诊区，母女相依而坐"></td>
+    <td width="50%"><img src="assets/gallery/橙暖爱/02-peeling-apple.jpg" alt="病房里，女儿给父亲削一个苹果"></td>
   </tr>
   <tr>
     <td align="center"><sub>候诊区 · 靠一靠就是陪伴</sub></td>
     <td align="center"><sub>病房 · 削一个苹果的时间</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="assets/readme/03-together-on-phone.jpg" alt="父亲和女儿一起看手机上的照片，笑出声"></td>
-    <td width="50%"><img src="assets/readme/04-autumn-walk.jpg" alt="秋天，女儿扶着父亲散步，小狗跑在前面"></td>
+    <td width="50%"><img src="assets/gallery/橙暖爱/03-together-on-phone.jpg" alt="父亲和女儿一起看手机上的照片，笑出声"></td>
+    <td width="50%"><img src="assets/gallery/橙暖爱/04-autumn-walk.jpg" alt="秋天，女儿扶着父亲散步，小狗跑在前面"></td>
   </tr>
   <tr>
     <td align="center"><sub>苦里的一口甜 · 一起笑出声</sub></td>
@@ -85,21 +85,21 @@
 renjian-guancha/
 ├── SKILL.md                     # 技能主文件（语气 / 骨架 / 交付 / 红线 / 自检）
 ├── README.md                    # 本文件
+├── CONTRIBUTING.md              # 贡献指南（新增风格系列 / 绘本；含「给 AI 协作者」步骤）
 ├── assets/
 │   ├── skeleton.html            # 起始 HTML 骨架
-│   └── readme/                  # 本 README 使用的代表插图
+│   └── gallery/                 # 各系列插图绘本（如 gallery/橙暖爱/）
 ├── references/
 │   ├── themes.md                # 主题库：配色 / 字体 / 版式 token
 │   ├── pipeline.md              # 出图与发送管线（HTML → PNG → 微信）
 │   ├── illustration.md          # 插图版全文（选风格 / 插点 / 提示词 / 核验）
-│   └── templates/               # 可复用模板系列（如 橙暖爱）
+│   └── templates/               # 可复用模板系列（templates.json + <系列>.md）
 ├── scripts/
 │   ├── ensure_deps.sh           # 依赖自检 / 安装
 │   ├── illustrate.py            # 出图（多后端自动回退）
 │   └── preset.py                # 模板系列组装 / 直接出图
-├── vendor/
-│   └── handraw-style-data/      # 内置精简手绘风格数据（未装 handraw-style 时回落）
-└── sync.sh                      # 基线 → git + skills 一键同步
+└── vendor/
+    └── handraw-style-data/      # 内置精简手绘风格数据（未装 handraw-style 时回落）
 ```
 
 ---
@@ -115,4 +115,18 @@ bash ~/.agents/skills/renjian-guancha/scripts/ensure_deps.sh
 
 ---
 
-*版本 v1.4.1 · 2026-10-09 · author: Minie (for 晓强)*
+## 一起把它写长
+
+这个项目最好的部分，应该由更多人接着写。
+
+- **欢迎 PR** —— 新增一个**风格模版系列**、一本**人文绘本**，或者只是改了一行更妥帖的字。
+- **欢迎 AI 协作者** —— [`CONTRIBUTING.md`](CONTRIBUTING.md) 里写了**「给 AI agent 的无歧义 12 步」**：
+  任何 agent 都能照着它，自己造出一个新的风格系列、画出一组新的绘本。**这是有意为之。**
+- 目前已发布：**橙暖爱**（治愈暖调 · 苦里透光），绘本见 [`assets/gallery/橙暖爱/`](assets/gallery/橙暖爱/)。
+  想要新的系列？照着 `CONTRIBUTING.md` 加一个就是。
+
+动手前请先看一眼 `CONTRIBUTING.md` 里的**三条底线**：不点名指控、不下定论、插画无字无印章。
+
+---
+
+*版本 v1.5.0 · 2026-10-09 · author: Minie (for 晓强)*
