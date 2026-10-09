@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{标题}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+  /* 主题在 references/themes.md 里选一套，替换下面变量 */
+  :root{
+    --bg:#131720; --card:#1A1F29; --line:#2A313D; --line2:#3A4353;
+    --text:#E9EBE6; --muted:#9BA2AB; --faint:#6D747E;
+    --steel:#7C97B4; --ember:#C57F4C; --red:#C2564B;  /* 主色1 主色2 警示 */
+    --serif:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--serif);
+    font-size:16.5px;line-height:2.0;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(900px 500px at 50% -8%, rgba(124,151,180,.10), transparent 60%);}
+  .page{max-width:820px;margin:0 auto;padding:72px 30px 92px}
+  header{text-align:center}
+  .eyebrow{font-size:13px;letter-spacing:.5em;color:var(--steel);margin-bottom:24px;text-indent:.5em}
+  h1{font-size:clamp(30px,6vw,50px);font-weight:900;line-height:1.2;margin:0;color:#F4F5F1}
+  h1 em{font-style:normal;color:var(--ember);font-weight:700}
+  .sub{margin:20px auto 0;max-width:36ch;color:var(--muted);font-size:15.5px;line-height:1.9}
+  .rule{margin:28px auto 0;width:150px;border-top:1px solid var(--steel);position:relative;opacity:.85}
+  .rule::after{content:"";display:block;border-top:1px solid var(--steel);margin-top:3px;opacity:.4}
+  .meta{margin-top:18px;font-size:12.5px;color:var(--faint);letter-spacing:.14em}
+  .pull{margin:46px auto 0;border-left:3px solid var(--ember);padding:6px 0 6px 22px;max-width:670px;
+    font-size:clamp(19px,3.2vw,25px);line-height:1.6;color:#F1F2ED}
+  .pull b{color:var(--ember)}
+  section{margin-top:52px}
+  .k{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
+  .k .no{font-family:"Fraunces",var(--serif);font-size:26px;font-weight:700;color:var(--steel);opacity:.9;line-height:1}
+  .k h2{font-size:clamp(21px,3.5vw,27px);font-weight:800;margin:0;color:#F4F5F1}
+  p{margin:0 0 15px;color:#D6D9D3} strong{color:#F4F5F1}
+  .hl{color:var(--steel);font-weight:700} .warm{color:var(--ember);font-weight:700} .red{color:var(--red);font-weight:700}
+  .close{margin-top:58px;border:1px solid var(--line2);border-radius:16px;padding:30px;text-align:center;
+    background:linear-gradient(180deg,rgba(124,151,180,.08),transparent)}
+  .close p{margin:0;font-size:clamp(16.5px,2.8vw,20px);line-height:1.95;color:#EFF0EB}
+  .close b{color:var(--steel)}
+  footer{margin-top:52px;text-align:center;font-size:12.5px;color:var(--faint);letter-spacing:.06em;line-height:2}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="eyebrow">{{点 睛 小 标}}</div>
+    <h1>{{主标题，<em>亮点词</em>}}</h1>
+    <div class="sub">{{副标题：一句立骨}}</div>
+    <div class="rule"></div>
+    <div class="meta">{{日期}} ｜ {{立场声明，如“旁观，不宣判”}}</div>
+  </header>
+
+  <div class="pull">{{一句核心判断，可含 <b>重点</b>}}</div>
+
+  <section>
+    <div class="k"><span class="no">一</span><h2>{{摊开}}</h2></div>
+    <p>先把事实 / 账本摆出来，数字标注来源与边界……</p>
+  </section>
+
+  <section>
+    <div class="k"><span class="no">二</span><h2>{{两面}}</h2></div>
+    <p>同一件事的两面并存，都写实……</p>
+  </section>
+
+  <section>
+    <div class="k"><span class="no">三</span><h2>{{归因到结构}}</h2></div>
+    <p>把问题落回激励 / 信息差 / 制度缝隙，而非个人……</p>
+  </section>
+
+  <section>
+    <div class="k"><span class="no">四</span><h2>{{人的细节}}</h2></div>
+    <p>一个具体的人、一个具体的瞬间……</p>
+  </section>
+
+  <section>
+    <div class="k"><span class="no">五</span><h2>心得</h2></div>
+    <p>诚实、可操作，常落在“三件小事”……</p>
+  </section>
+
+  <div class="close">
+    <p>{{真诚收束：不金句、不口号、不硬拔高。}}</p>
+  </div>
+
+  <footer>{{一句边界声明}}<br>—— Minie 🦞</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "橙暖爱": {
+    "name_zh": "橙暖爱",
+    "desc": "治愈暖调 · 苦里透光 · 母女 / 陪伴 / 医患照料",
+    "mood": "温暖、治愈、安静、有希望；冷静地写现实的苦，再用暖光让甜被看见。",
+    "style_name": "Oil-Pastel Healing Illustration（油画棒治愈手绘）",
+    "reference": "油画棒治愈手绘",
+    "traits": "粗颗粒、蜡质色块、奶油高饱和、拙朴人物、笔触温暖松软",
+    "colors": "柿子橙 (Persimmon Orange) 与 那不勒斯黄 (Naples Yellow)",
+    "suffix": "纯净底，大量留白，温暖安静。",
+    "negative": "文字, 汉字, 中文字, 英文字母, 数字, 日期, 星期, 签名, 落款, 印章, 水印, logo, 标题, 商标, 货币文字, 日历数字, 任何可读的字符",
+    "hq_default": true,
+    "backend": "cpa",
+    "html_tokens": {
+      "bg": "#FBF4E8", "card": "#FFFBF4", "line": "#EEDFC6", "line2": "#E0CBA6",
+      "ink": "#2C2620", "ink2": "#463D30", "muted": "#7C6F5B", "faint": "#A99B82",
+      "sun": "#E58A2B", "sun2": "#F3B65C", "ember": "#C3602A", "grow": "#6E8A5E", "slate": "#5E6E74",
+      "body_bg": "radial-gradient(1200px 620px at 50% -220px, rgba(243,182,92,.45), rgba(229,138,43,.10) 42%, transparent 66%), linear-gradient(180deg, rgba(243,182,92,.16), transparent 520px)"
+    },
+    "scenes_seen": [
+      "化疗大厅：一排椅子一半晒着太阳",
+      "两位女性分一个橘子，橙皮像小太阳",
+      "阳光落在输液管与窗台绿植上",
+      "母女并肩/搀扶/掖披肩/床边握手/同食一碗粥",
+      "医患：俯身倾听 / 蹲下握手 / 掖被角 / 并肩看窗外 / 耐心解释 / 门口道别",
+      "护士替人掖毯子、窗台绿植与温水、围坐唱歌的蛋糕"
+    ]
+  }
+}
