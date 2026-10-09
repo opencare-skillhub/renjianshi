@@ -1,5 +1,12 @@
 # 人间世 · The Truth of Life
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
+![Shell](https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnu-bash&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+
+**语言 / Languages**：[简体中文](README.md) · [English](README.en.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [العربية](README.ar.md)
+
 > **人间观察（renjian-guancha）** —— 一个以「人文感」为中心的写作技能。
 
 这是我发布过的所有作品里，**第一个不再以「工具感」为中心、而是以「人文感」为中心**的技能。
@@ -132,4 +139,10 @@ bash ~/.agents/skills/renjian-guancha/scripts/ensure_deps.sh
 
 ---
 
-*版本 v1.5.0 · 2026-10-09 · author: Minie (for 晓强)*
+## 感谢
+
+**感谢小胰宝社区志愿者晓强的 ❤️ 贡献。**
+
+---
+
+*版本 v1.5.1 · 2026-10-09 · author: Minie (for 晓强)*
