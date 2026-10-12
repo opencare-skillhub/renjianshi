@@ -11,7 +11,7 @@ description: >-
   触发插图版：用户说“插图版 / 配图版 / 出图版 / 加上图 / 来几张画”。
   不用于：新闻播报、营销软文、事实摘要、需要快速作答的简单问答、纯数据报告。
 metadata:
-  version: "1.5.1"
+  version: "1.5.2"
   author: "Minie (for 晓强)"
   tone: "冷静 · 人文 · 文艺 · 独立"
 ---
@@ -54,7 +54,7 @@ metadata:
 ## 4. 交付物（默认流程）
 1. **手工精雕 HTML 一页**：为内容定制版式、配色、意象。**不要用 `answer-me-with-html`（am）——用户已定它默认关闭。**
 2. **主题**：从 `references/themes.md` 选一套（冷钢+余温 / 夜话 / 晨光 / 雨后 / 灯橙 / 亚麻 / 电影感 / 金石…）。**为内容选皮，别复用同一套。**
-3. **出图**：`~/clawd/scripts/html2png.sh <html> <out.png> [viewport_w] [out_w]` → 1080 宽 PNG。
+3. **出图**：`scripts/html2png.sh <html> <out.png|out.jpg> [viewport_w] [out_w]` → 长图 PNG/JPEG（Gotenberg 优先，Chromium 回退）。
    - ⚠️ 浅底用“深色文字行”裁剪、深底用“浅色文字行”裁剪（脚本默认按背景差异裁，**纹理底会失效**，需手动改检测方式，见 `references/pipeline.md`）。
 4. **发送**：`message(action=send, media="/abs/path.png", message="…")`。
    - **必须发 PNG**：iOS 微信打不开 `.html`；附件**分开单发**，别连发（连发易"断"）。
@@ -137,9 +137,10 @@ metadata:
 
 **依赖先自检（第一次用/换机时先跑）**
 ```bash
-bash ~/.agents/skills/renjian-guancha/scripts/ensure_deps.sh
+cd "<已安装的 renjian-guancha 技能目录>"
+bash scripts/ensure_deps.sh
 ```
-- 自动装 Python 包（httpx/Pillow/numpy/dotenv）、检查 Chrome / `html2png.sh` / `SN_IMAGE_GEN_*`。
+- 自动检查 Python 包、Gotenberg/Chromium、`html2png.sh` 与生图环境配置；依赖安装失败时按提示处理。
 - `handraw-style` 未装时，**回落本技能内置的精简风格数据**（`vendor/handraw-style-data/`，风格+配色+提示词够用；缺的只是"参考图"）。
 - 即：**只装这一个技能包也能跑插图版**。细节见 `references/illustration.md`「依赖与安装」。
 

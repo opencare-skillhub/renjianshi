@@ -12,11 +12,12 @@
 ## 用法
 
 ```bash
-PY=~/clawd/.venvs/imgtool/bin/python
+cd "<已安装的 renjian-guancha 技能目录>"
+PY=.venv/bin/python
 # 打印组好的提示词
-$PY ~/.agents/skills/renjian-guancha/scripts/preset.py --template 橙暖爱 --scene "母女俩在窗边分一个橘子"
+$PY scripts/preset.py --template 橙暖爱 --scene "母女俩在窗边分一个橘子"
 # 直接出图（橙暖爱默认走 --hq / CPA gpt-image-2）
-$PY ~/.agents/skills/renjian-guancha/scripts/preset.py --template 橙暖爱 --scene "…" --run --out /abs/x.png
+$PY scripts/preset.py --template 橙暖爱 --scene "…" --run --out /abs/x.png
 ```
 
 ## 新增系列

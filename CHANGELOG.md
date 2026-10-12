@@ -2,6 +2,13 @@
 
 版本号写在 `SKILL.md` 的 `metadata.version`。**改动 `SKILL.md` 或 `references/` 的实质内容时，同时在这里记一条**（只改版本头不记日志，等于没记）。
 
+## v1.5.2 · 2026-10-12
+
+- 新增跨平台配置目录与环境文件解析，支持 Linux/XDG、macOS、Windows，以及显式路径覆盖。
+- OpenRouter 密钥不再从 `openclaw.json` 发现，命令行不接受原始密钥参数。
+- 新增长图 Gotenberg 优先、Chromium 回退的 PNG/JPEG 渲染脚本。
+- 依赖检查支持 Linux 容器，并可复用同 Python 版本的 venv 包目录。
+
 ## v1.5.1 · 2026-10-09
 
 - 新增 **LICENSE（MIT）**，各语言 README 顶部加 MIT 许可标识 + 开发语言标识（Python / Shell / HTML5）。

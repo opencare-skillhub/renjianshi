@@ -9,7 +9,7 @@
 
 用法:
   illustrate.py --prompt "<提示词>" --out /abs/x.png [--size 1664x928] [--hq] [--backend auto]
-                [--or-key K] [--proxy http://127.0.0.1:7890] [--negative "..."] [--seed N] [--env ~/.openclaw/.env]
+                [--proxy http://127.0.0.1:7890] [--negative "..."] [--seed N] [--env <env-file>]
 
 要点:
   - Qwen-Image 宽度必须 <2048（用 1664x928 / 1328x1328）。
@@ -23,6 +23,8 @@ import os
 import sys
 import urllib.request
 from pathlib import Path
+from renjian_paths import activate_skill_site_packages, env_file
+activate_skill_site_packages()
 
 DEFAULT_NEG = ("文字, 汉字, 中文字, 英文字母, 数字, 日期, 星期, 签名, 落款, 印章, 水印, "
                "logo, 标题, 商标, 货币文字, 日历数字, 任何可读的字符")
@@ -41,8 +43,8 @@ OR_CHEAP = ["openai/gpt-5-image-mini", "google/gemini-2.5-flash-image"]
 OR_HQ = ["google/gemini-3-pro-image", "google/gemini-3-pro-image-preview", "google/gemini-nano-banana-2.1"]
 
 
-def load_env(env_path: str):
-    p = Path(os.path.expanduser(env_path))
+def load_env(env_path: str | None = None):
+    p = env_file(env_path)
     if not p.exists():
         return
     for line in p.read_text(encoding="utf-8", errors="ignore").splitlines():
@@ -53,21 +55,11 @@ def load_env(env_path: str):
         os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 
-def find_or_key(cli_key: str | None) -> str:
-    if cli_key:
-        return cli_key
+def find_or_key() -> str:
+    """Read credentials only from process environment or the selected env file."""
     for env in ("OPENROUTER_API_KEY", "OPENROUTER_KEY", "OR_API_KEY"):
         if os.environ.get(env):
             return os.environ[env].strip()
-    # 兜底：从 openclaw.json 的 openrouter provider 里取
-    for cfg in (Path.home() / ".openclaw/openclaw.json",):
-        try:
-            d = json.loads(cfg.read_text())
-            for name, p in d.get("models", {}).get("providers", {}).items():
-                if "openrouter" in name.lower() and p.get("apiKey", "").startswith("sk-or-"):
-                    return p["apiKey"].strip()
-        except Exception:
-            pass
     return ""
 
 
@@ -186,17 +178,16 @@ def main() -> int:
     ap.add_argument("--backend", default="auto", choices=["auto", "qwen", "cpa", "openrouter"])
     ap.add_argument("--hq", action="store_true", help="高质量：用最新 Nano Banana")
     ap.add_argument("--quality", default="", help="high/高质量/hq 等价于 --hq")
-    ap.add_argument("--or-key", default=None)
     ap.add_argument("--proxy", default=os.environ.get("OR_PROXY", OR_DEFAULT_PROXY))
     ap.add_argument("--seed", type=int, default=None)
-    ap.add_argument("--env", default="~/.openclaw/.env")
+    ap.add_argument("--env", default=None, help="optional credentials env file (also: IMAGEGEN_ENV_FILE)")
     ap.add_argument("--timeout", type=float, default=300.0)
     args = ap.parse_args()
 
     load_env(args.env)
     hq = args.hq or args.quality.lower() in ("high", "hq", "高质量", "高清", "精美", "pro")
     out = Path(args.out).expanduser()
-    or_key = find_or_key(args.or_key)
+    or_key = find_or_key()
 
     # 组装候选链
     if args.backend == "qwen":

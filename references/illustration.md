@@ -13,18 +13,19 @@
 | 依赖 | 必需? | 体积 | 说明 |
 |---|---|---|---|
 | Python 包 `httpx` / `Pillow` / `numpy` / `python-dotenv` | ✅ | 小 | 出图 + 出长图 |
-| Chrome | ✅ | 系统已装 | `html2png.sh` 截图 |
-| `~/clawd/scripts/html2png.sh` | ✅ | 小 | 出长图（裁白已修） |
-| env：`SN_IMAGE_GEN_API_KEY`（+ `BASE_URL`/`MODEL`） | ✅ | — | 生图后端（SiliconFlow Qwen-Image），写在 `~/.openclaw/.env` |
+| Gotenberg 或 Chromium | ✅ | 独立服务或系统已装 | `scripts/html2png.sh` 渲染 |
+| `scripts/html2png.sh` | ✅ | 小 | 出 PNG/JPEG 长图（Gotenberg 优先，Chromium 回退） |
+| 生图凭据 | ✅ | — | 进程环境变量或配置目录中的 `imagegen.env`；可用 `IMAGEGEN_ENV_FILE` 指定 |
 | 手绘技能 `handraw-style` | ⭕ 推荐 | **76MB** | 风格库 + 参考图；**未装时用本技能内置的精简数据**（`vendor/handraw-style-data/`，风格+配色+提示词够用，仅缺"参考图"） |
 | 作图技能 `sn-image-base` | ⭕ 可选 | 428KB | 备用出图通道；**主路径是本技能自带 `scripts/illustrate.py`** |
 
-**自动自检 + 安装（一条命令）**：
+**自动自检 + 安装（一条命令）**：先进入技能目录，再运行：
 ```bash
-bash ~/.agents/skills/renjian-guancha/scripts/ensure_deps.sh
+cd "<已安装的 renjian-guancha 技能目录>"
+bash scripts/ensure_deps.sh
 ```
 - 会自动：创建 venv、`pip install` 缺的 Python 包；
-- 会检查：`handraw-style`（缺则回落内置 vendor 数据）、Chrome、`html2png.sh`、`SN_IMAGE_GEN_*`；
+- 会检查：内置 `handraw-style` 数据、Gotenberg/Chromium、`html2png.sh` 和生图环境配置；
 - 输出「✅ / ⚠️ / ❌」清单；有 ❌ 就按提示补齐后重跑。
 
 > 结论：**只装这一个技能包也能跑插图版**（内置了风格数据 + 出图器）；`handraw-style` 是"锦上添花"（给参考图）。
@@ -107,8 +108,9 @@ bash ~/.agents/skills/renjian-guancha/scripts/ensure_deps.sh
 ## 5. 出图脚本（多后端 + 自动回退 + 高质量触发）
 
 ```bash
-PY=~/clawd/.venvs/imgtool/bin/python
-$PY ~/.agents/skills/renjian-guancha/scripts/illustrate.py \
+cd "<已安装的 renjian-guancha 技能目录>"
+PY=.venv/bin/python
+$PY scripts/illustrate.py \
   --prompt "<按 §4 组好的中文提示词>" --out /abs/01-xxx.png --size 1664x928
 # 高质量：加 --hq（或 --quality high）
 $PY .../illustrate.py --prompt "..." --out /abs/02-xxx.png --hq
@@ -123,9 +125,10 @@ $PY .../illustrate.py --prompt "..." --out /abs/02-xxx.png --hq
 - **任一后端失败自动回退到下一个**（含 Qwen 下载被截断、CPA 尺寸被拒的情况）。
 - 可 `--backend qwen|cpa|openrouter` 强制单通道。
 - **高质量触发词**（供上层识别）：`高质量 / 高清 / 精细 / 精美 / HQ / pro`。
-- **CPA 后端** 走 `https://cpa.hybridsam.dev/v1`，key 从 `~/.openclaw/.env` 的 `CPA_API_KEY` 读；`gpt-image-2` / `gpt-image-1.5` 均实测可用（~25s/张）。
-- **OpenRouter 后端必须走代理**（默认 `http://127.0.0.1:7890`，`--proxy` 可覆盖；直连地域封 403）；key 自动从 env `OPENROUTER_API_KEY` 或 `~/.openclaw/openclaw.json` 读取。
-- Qwen 后端自动从 `~/.openclaw/.env` 读 `SN_IMAGE_GEN_*`；自动带负面词。
+- **CPA 后端** 的 `CPA_API_KEY` 从进程环境变量或配置环境文件读取。
+- **OpenRouter 后端** 的 key 从 `OPENROUTER_API_KEY`（或兼容变量）读取；代理地址通过 `OR_PROXY` 或 `--proxy` 配置。
+- Qwen 后端从进程环境变量或配置环境文件读取 `SN_IMAGE_GEN_*`；自动带负面词。
+- 脚本不读取 `openclaw.json`，也不接受命令行密钥参数；环境文件优先使用 `IMAGEGEN_ENV_FILE` 指定位置，默认跨平台配置目录为 `renjian-guancha/imagegen.env`。
 - 费用参考（OpenRouter image_output，由低到高）：`gpt-5-image-mini` 最低 → `gemini-2.5-flash-image` / `gemini-3.1-flash-lite-image` → `gpt-5-image` → `gemini-3.1-flash-image` → `gemini-3-pro-image` 最高。
 - ⚠️ `google/gemini-nano-banana-2.1` 本机 key 实测报 “API key not valid”，仅作末位兜底；高质量首选 `gemini-3-pro-image` / CPA `gpt-image-2`。
 
@@ -155,7 +158,7 @@ $PY .../illustrate.py --prompt "..." --out /abs/02-xxx.png --hq
 ## 7. 出长图
 
 ```bash
-~/clawd/scripts/html2png.sh <html> <out.png> 1100 1240
+bash scripts/html2png.sh <html> <out.png|out.jpg> 1100 1240
 ```
 - **裁白已修**（2026-10-08）：`html2png.sh` 现按"逐行左右页边距中位色"判背景，对纸纹/渐变底免疫，不会再留大片空白。
 - 旧法（若脚本不可用）见 `pipeline.md` 的"深色文字行"手写裁剪。

@@ -98,12 +98,14 @@ renjian-guancha/
 │   └── gallery/                 # 各系列插图绘本（如 gallery/橙暖爱/）
 ├── references/
 │   ├── themes.md                # 主题库：配色 / 字体 / 版式 token
-│   ├── pipeline.md              # 出图与发送管线（HTML → PNG → 微信）
+│   ├── pipeline.md              # 跨平台出图与渲染管线
 │   ├── illustration.md          # 插图版全文（选风格 / 插点 / 提示词 / 核验）
 │   └── templates/               # 可复用模板系列（templates.json + <系列>.md）
 ├── scripts/
 │   ├── ensure_deps.sh           # 依赖自检 / 安装
 │   ├── illustrate.py            # 出图（多后端自动回退）
+│   ├── renjian_paths.py         # 跨平台配置目录与环境文件解析
+│   ├── html2png.sh              # HTML 转长图 PNG/JPEG（Gotenberg/Chromium）
 │   └── preset.py                # 模板系列组装 / 直接出图
 └── vendor/
     └── handraw-style-data/      # 内置精简手绘风格数据（未装 handraw-style 时回落）
@@ -114,11 +116,26 @@ renjian-guancha/
 ## 快速开始
 
 ```bash
-# 依赖自检（第一次用 / 换机时）
-bash ~/.agents/skills/renjian-guancha/scripts/ensure_deps.sh
+# 进入已安装的技能目录后运行依赖自检
+cd /path/to/renjian-guancha
+bash scripts/ensure_deps.sh
 ```
 
 直接对助手说：**「写一篇：……」**（题足够具体，或让它自己观察），默认走「文字版」；想要配图就说 **「插图版」**。
+
+### 插图环境配置
+
+生图脚本从进程环境变量或环境文件读取密钥，不会从 `openclaw.json` 搜索密钥，也不接受命令行密钥参数。进程环境变量优先于环境文件。
+
+| 系统 | 默认配置目录 |
+|---|---|
+| macOS | `~/Library/Application Support/renjian-guancha/` |
+| Windows | `%APPDATA%/renjian-guancha/` |
+| Linux | `$XDG_CONFIG_HOME/renjian-guancha/`，未设置时为 `~/.config/renjian-guancha/` |
+
+在配置目录创建 `imagegen.env`，按需放入 `SN_IMAGE_GEN_API_KEY=...`、`CPA_API_KEY=...`、`OPENROUTER_API_KEY=...` 等凭据。也可用 `IMAGEGEN_ENV_FILE=/path/to/credentials.env` 指定文件，或用 `RENJIAN_CONFIG_DIR` 覆盖配置目录。旧 `~/.openclaw/.env` 仅作为兼容回退；建议迁移到新位置。请勿提交含密钥的环境文件。
+
+`scripts/html2png.sh` 支持 PNG/JPEG 长图，优先使用 Gotenberg（可由 `GOTENBERG_URL` 指定），不可用时回退到本机 Chromium；Python 可用 `IMAGE_SKILL_PYTHON` 指定。NAS 部署可以复用已部署的 Gotenberg 服务。
 
 ---
 
@@ -145,4 +162,4 @@ bash ~/.agents/skills/renjian-guancha/scripts/ensure_deps.sh
 
 ---
 
-*版本 v1.5.1 · 2026-10-09 · author: Minie (for 晓强)*
+*版本 v1.5.2 · 2026-10-12 · author: Minie (for 晓强)*

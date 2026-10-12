@@ -1,38 +1,27 @@
 # 出图与发送管线（HTML → PNG → 微信）
 
-## 依赖（本机已就绪）
-- Chrome：`/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`
-- Pillow/numpy venv：`~/clawd/.venvs/imgtool/bin/python`（若无：`python3 -m venv ~/clawd/.venvs/imgtool && ~/clawd/.venvs/imgtool/bin/pip install -U Pillow numpy`）
-- 出图脚本：`~/clawd/scripts/html2png.sh`
+## 路径与配置
+
+技能脚本与资源按技能目录相对定位。用户配置目录按系统区分：macOS `~/Library/Application Support/renjian-guancha/`，Windows `%APPDATA%/renjian-guancha/`，Linux `$XDG_CONFIG_HOME/renjian-guancha/`（未设置时为 `~/.config/renjian-guancha/`）。`RENJIAN_CONFIG_DIR` 可覆盖配置目录；`IMAGEGEN_ENV_FILE` 可指定凭据文件，兼容 `OPENCLAW_ENV_FILE`。环境变量优先于环境文件；旧 `~/.openclaw/.env` 只在新位置不存在时作为兼容回退。
+
+API 凭据只从进程环境变量或环境文件读取，不从 `openclaw.json` 提取，也不通过命令行参数传递原始密钥。不要把含密钥的环境文件提交到 Git。
+
+## 渲染
+
+```bash
+bash scripts/html2png.sh <input.html|url> <output.png|output.jpg> [viewport_w=1100] [output_w=1240]
+```
+
+脚本优先使用 `GOTENBERG_URL` 指定的 Gotenberg，也会探测常用服务地址；不可用时回退到 `CHROME_BIN` 或 PATH 中的 Chromium。Python 可通过 `IMAGE_SKILL_PYTHON` 指定。NAS 部署可直接使用已接入的 Gotenberg，无需容器内另装浏览器。
 
 ## 标准流程
 ```bash
 # 1) 写页面：/tmp/<slug>.html（见 assets/skeleton.html）
 
-# 2) 截图（2x 清晰），窗口高度给足
-CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-"$CHROME" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=2 \
-  --window-size=880,12000 --virtual-time-budget=7000 \
-  --screenshot=/tmp/<slug>_shot.png "file:///tmp/<slug>.html"
+# 2) 出长图，自动裁白并导出 PNG/JPEG
+bash scripts/html2png.sh /tmp/<slug>.html /tmp/<slug>.png 1100 1240
 
-# 3) 裁白并缩到 1080 宽（关键：按文字行检测，别用纯背景差异）
-~/clawd/.venvs/imgtool/bin/python - <<'PY'
-from PIL import Image
-import numpy as np
-slug="<slug>"
-im=Image.open(f"/tmp/{slug}_shot.png").convert('RGB')
-a=np.asarray(im).astype(int); h,w,_=a.shape
-dark = (a.sum(axis=2) < 360)      # 浅底页面：检测“深色文字行”
-# 深底页面把它换成： light = (a.sum(axis=2) > 300)
-rows=np.where(dark.sum(axis=1) >= 3)[0]
-top=max(0,int(rows.min())-70); bottom=min(h,int(rows.max())+80)
-crop=im.crop((0,top,w,bottom)); tw=1080
-crop=crop.resize((tw,int(crop.size[1]*tw/crop.size[0])),Image.LANCZOS)
-crop.save(f"/tmp/{slug}.png",optimize=True)
-print("ok",crop.size)
-PY
-
-# 4) 发送（先图，后文字摘要）
+# 3) 发送（先图，后文字摘要）
 # message(action=send, media="/tmp/<slug>.png", message="…")
 ```
 
